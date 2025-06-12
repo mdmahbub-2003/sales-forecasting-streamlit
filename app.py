@@ -2,87 +2,73 @@ import streamlit as st
 import pandas as pd
 import time
 
-st.set_page_config(page_title="🚀 Future Sales Predictor", layout="centered")
+# Page config
+st.set_page_config(
+    page_title="🔥 AI Sales Predictor",
+    page_icon="📈",
+    layout="centered",
+    initial_sidebar_state="collapsed"
+)
 
-# Custom CSS
+# Custom CSS for tadhakta-badhakta look
 st.markdown("""
-<style>
-body {
-    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-}
-.stApp {
-    background: transparent;
-}
-.big-title {
-    font-size: 48px;
-    font-weight: bold;
-    color: #ffffff;
-    text-align: center;
-    margin-bottom: 10px;
-}
-.glass-box {
-    background: rgba(255, 255, 255, 0.08);
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    color: white;
-}
-.stButton > button {
-    background: linear-gradient(135deg, #ff416c, #ff4b2b);
-    color: white;
-    font-weight: bold;
-    border-radius: 10px;
-    padding: 10px 24px;
-    transition: 0.3s;
-}
-.stButton > button:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 0px 15px #ff4b2b;
-}
-</style>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+
+    html, body, [class*="css"]  {
+        font-family: 'Orbitron', sans-serif;
+        background: radial-gradient(ellipse at center, #0f0c29 0%, #302b63 50%, #24243e 100%) !important;
+        color: #00ffe7;
+    }
+
+    .stApp {
+        animation: pulseGlow 5s infinite;
+    }
+
+    @keyframes pulseGlow {
+        0% { box-shadow: 0 0 10px #00ffe7; }
+        50% { box-shadow: 0 0 30px #00ffe7; }
+        100% { box-shadow: 0 0 10px #00ffe7; }
+    }
+
+    .main-title {
+        text-align: center;
+        font-size: 3em;
+        color: #00ffe7;
+        text-shadow: 0 0 10px #00ffe7;
+        margin-bottom: 30px;
+    }
+
+    .footer {
+        text-align: center;
+        font-size: 0.9em;
+        color: #aaa;
+        margin-top: 50px;
+    }
+
+    </style>
 """, unsafe_allow_html=True)
 
-# 💥 TITLE
-st.markdown('<div class="big-title">📊 Future Sales Predictor 🔮</div>', unsafe_allow_html=True)
-st.write("")
+# Title
+st.markdown('<div class="main-title">⚡ AI Sales Predictor</div>', unsafe_allow_html=True)
 
-# 🗂️ Upload Section
-with st.container():
-    st.markdown('<div class="glass-box">', unsafe_allow_html=True)
-    st.subheader("🗂️ Step 1: Upload Your Sales CSV File")
-    uploaded_file = st.file_uploader("Choose your .csv file", type="csv")
+# Upload Section
+uploaded_file = st.file_uploader("📤 Upload your CSV file", type=["csv"])
 
-    if uploaded_file:
+if uploaded_file is not None:
+    with st.spinner('🚀 Predicting future sales...'):
+        time.sleep(2)  # Simulating prediction delay
+
         df = pd.read_csv(uploaded_file)
         st.success("✅ File uploaded successfully!")
+
+        st.subheader("📊 Preview of Uploaded Data")
         st.dataframe(df.head())
-    else:
-        st.info("Please upload a file to proceed.")
-    st.markdown('</div>', unsafe_allow_html=True)
 
-# 🚀 Prediction Section
-st.write("")
-with st.container():
-    st.markdown('<div class="glass-box">', unsafe_allow_html=True)
-    st.subheader("🤖 Step 2: Predict Future Sales")
+        # Dummy prediction (replace with real model)
+        st.subheader("📈 Predicted Sales")
+        df['Predicted_Sales'] = df.iloc[:, -1].apply(lambda x: round(x * 1.2, 2))  # Dummy multiplier
+        st.dataframe(df[['Predicted_Sales']])
 
-    if uploaded_file:
-        if st.button("🚀 Run Prediction"):
-            with st.spinner("AI is predicting... please wait... 🧠"):
-                time.sleep(2)  # Simulated delay
-
-                # 🔮 Dummy Prediction Logic
-                df["Predicted_Sales"] = df.iloc[:, -1] * 1.25  # Just for demo
-
-                st.success("🎯 Prediction Completed!")
-                st.dataframe(df.head())
-
-                # 📥 Download
-                csv = df.to_csv(index=False).encode('utf-8')
-                st.download_button("📥 Download Results", csv, "predicted_sales.csv", "text/csv")
-    else:
-        st.warning("⚠️ Please upload a file first.")
-    st.markdown('</div>', unsafe_allow_html=True)
+# Footer
+st.markdown('<div class="footer">Made with ❤️ by Mudassir Inam</div>', unsafe_allow_html=True)
