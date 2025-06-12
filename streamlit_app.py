@@ -40,5 +40,5 @@ input_data = pd.DataFrame([{
 
 # Predict Button
 if st.button("Predict Sales Revenue"):
-    prediction = model.predict(input_data)[0]
+    prediction = model.predict(input_data.values)[0]  # <-- FIXED HERE
     st.success(f"💰 Predicted Sales Revenue: ${prediction:,.2f}")
